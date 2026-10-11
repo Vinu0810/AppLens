@@ -1,0 +1,48 @@
+# ─── START EVERYTHING ───────────────────────────────────────────────
+
+# 1. Start PostgreSQL (always needed)
+docker start applens-postgres
+
+# 2. Start the Spring Boot app
+cd /Users/vishnu/Documents/AppLens
+mvn spring-boot:run
+
+
+# ─── STOP EVERYTHING ────────────────────────────────────────────────
+
+# Stop Spring Boot: Ctrl+C in the terminal running it
+
+# Stop PostgreSQL (optional — fine to leave running)
+docker stop applens-postgres
+
+
+# ─── CHECK WHAT'S RUNNING ───────────────────────────────────────────
+
+# Is Docker container running?
+docker ps
+
+# Is port 8080 in use?
+lsof -i :8080
+
+# Kill whatever is on port 8080
+lsof -ti :8080 | xargs kill -9
+
+
+# ─── ONE-LINER: start postgres + app together ───────────────────────
+docker start applens-postgres && mvn spring-boot:run
+
+
+# ─── FUTURE: after Week 5 (Redis added) ─────────────────────────────
+docker start applens-postgres
+docker start applens-redis
+mvn spring-boot:run
+
+# ─── FUTURE: after Week 6 (Kafka added) ─────────────────────────────
+docker start applens-postgres
+docker start applens-redis
+docker start applens-kafka
+mvn spring-boot:run
+
+
+# ─── PREVENT AUTO-STOP (run once, never worry again) ────────────────
+docker update --restart always applens-postgres
